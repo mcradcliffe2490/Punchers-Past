@@ -1,4 +1,4 @@
-﻿; Definitions of system screens
+; Definitions of system screens
 
 ; Motif: MUGEN1
 ; Optimal resolution: 1280x720
@@ -48,6 +48,7 @@ font4 = arcade.def
 font5 = mssansserif-tt36.def
 ;font5.height = 36         ;Uncomment to override the size of the font (Truetype fonts only)
 font6 = infofont.def
+font7 = Main_Menu.def
 
 ; Load alternative victory quote font (font5) if language is "ja".
 [ja.Files]
@@ -106,29 +107,29 @@ victory.bgm.loopend =
 [Title Info]
 fadein.time = 10
 fadeout.time = 10
-menu.pos = 640,380
-menu.item.font = 4,0,0
-menu.item.active.font = 4,5,0, 224,240,240
-menu.item.spacing = 0, 54
+menu.pos = 640,719
+menu.item.font = 0,0,0
+menu.item.active.font = 7,0,0,
+menu.item.spacing = 0, 0
 ; Names for each of the items in the menu. Names must be in quotes.
 ; Use "" to disable an item. If all are disabled, goes straight to demo mode
 ; (hold Esc to quit demos).
-menu.itemname.arcade = "ARCADE"
-menu.itemname.versus = "VS MODE"
-menu.itemname.teamarcade = "TEAM ARCADE"
-menu.itemname.teamversus = "TEAM VS"
-menu.itemname.teamcoop = "TEAM CO-OP"
-menu.itemname.survival = "SURVIVAL"
-menu.itemname.survivalcoop = "SURVIVAL CO-OP"
-menu.itemname.training = "TRAINING"
-menu.itemname.watch = "WATCH"
-menu.itemname.options = "OPTIONS"
-menu.itemname.exit = "EXIT"
+menu.itemname.arcade = "A"
+menu.itemname.versus = "B"
+menu.itemname.teamarcade = "C"
+menu.itemname.teamversus = "D"
+menu.itemname.teamcoop = "E"
+;menu.itemname.survival = "SURVIVAL"
+;menu.itemname.survivalcoop = "SURVIVAL CO-OP"
+;menu.itemname.training = "TRAINING"
+menu.itemname.watch = "F"
+menu.itemname.options = "G"
+menu.itemname.exit = "H"
 ; These parameters define the window in which the items are visible
 ; in.
-menu.window.margins.y = 40, 34
-menu.window.visibleitems = 5
-menu.boxcursor.visible = 1     ;Set to 0 to disable default cursor display
+menu.window.margins.y = 1280, 720
+menu.window.visibleitems = 1
+menu.boxcursor.visible = 0     ;Set to 0 to disable default cursor display
 menu.boxcursor.coords = -298,-35,298,6
 ; These are the sounds for cursor movement
 cursor.move.snd = 100,0
