@@ -78,7 +78,8 @@ Amelia_Earhart, stages/kfm.def
 [ExtraStages]
  ;Put extra stages here. They will be available in VS and Watch modes.
  ;For example, you can insert "stages/mybg.def".
-stages/stage0-720.def
+stages/colosseum.def
+stages/pyramids.def
 
 ;---------------------------------------------------------------------
 [Options]
