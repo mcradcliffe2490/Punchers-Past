@@ -73,6 +73,7 @@
 kfm, stages/kfm.def
 kfm720, stages/kfm.def
 Amelia_Earhart, stages/kfm.def
+Abraham_Linc, stages/kfm.def
 
 ;-----------------------
 [ExtraStages]
