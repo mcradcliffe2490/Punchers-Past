@@ -14,28 +14,28 @@ Punchers Past is a fighting game created in the fighting game engine M.U.G.E.N. 
 ## Controls 
 
 Player 1
-Up Arrow - Jump
-Down Arrow - Crouch
-Left Arrow - Move left
-Right Arrow - Move right
+- Up Arrow - Jump
+- Down Arrow - Crouch
+- Left Arrow - Move left
+- Right Arrow - Move right
 (Double tap left or right to run/hop)
-L - light punch 
-; - heavy punch
-, - light kick
-. - heavy kick
-Esc - exit match
+- L - light punch 
+- ; - heavy punch
+- , - light kick
+- . - heavy kick
+- Esc - exit match
 
 Player 2
-W - Jump
-S - Crouch
-A - Move left
-D - Move right 
+- W - Jump
+- S - Crouch
+- A - Move left
+- D - Move right 
 (Doube tap left or right to run/hop)
-R - light punch
-T - heavy punch
-F - light kick 
-G - heavy kick
-Esc - exit match
+- R - light punch
+- T - heavy punch
+- F - light kick 
+- G - heavy kick
+- Esc - exit match
 
 ## Contributions 
 ### Anthony 
