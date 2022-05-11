@@ -1,0 +1,456 @@
+; F1's constants and state file.
+; There are comments scattered through this file, so you may like to
+; take a look if would like to learn more about the cns.
+
+[Data]
+;Amount of life to start with
+life = 1000
+;attack power (more is stronger)
+attack = 10000000
+;defensive power (more is stronger)
+defence = 10000000
+;Percentage to increase defense everytime player is knocked down
+fall.defence_up = 100000
+;Time which player lies down for, before getting up
+liedown.time = 0
+;Number of points for juggling
+airjuggle = 1000000
+;Default hit spark number for HitDefs
+sparkno = 2
+;Default guard spark number
+guard.sparkno = 40
+;1 to enable echo on KO
+KO.echo = 0
+;Volume offset (negative for softer)
+volume = 0
+;Variables with this index and above will not have their values
+;reset to 0 between rounds or matches. There are 60 int variables,
+;indexed from 0 to 59, and 40 float variables, indexed from 0 to 39.
+;If omitted, then it defaults to 60 and 40 for integer and float
+;variables repectively, meaning that none are persistent, i.e. all
+;are reset. If you want your variables to persist between matches,
+;you need to override state 5900 from common1.cns.
+IntPersistIndex = 60
+FloatPersistIndex = 40
+
+[Size]
+xscale = .35           ;Horizontal scaling factor.
+yscale = .35           ;Vertical scaling factor.
+ground.back = 5      ;Player width (back, ground)
+ground.front = 5     ;Player width (front, ground)
+air.back = 5         ;Player width (back, air)
+air.front = 5        ;Player width (front, air)
+height = 16          ;Height of player (for opponent to jump over)
+attack.dist = 160    ;Default attack distance
+proj.attack.dist = 90 ;Default attack distance for projectiles
+proj.doscale = 0     ;Set to 1 to scale projectiles too
+head.pos = -5, -16   ;Approximate position of head
+mid.pos = -5, -16    ;Approximate position of midsection
+shadowoffset = 0     ;Number of pixels to vertically offset the shadow
+draw.offset = 0,0    ;Player drawing offset in pixels (x, y)
+
+[Velocity]
+walk.fwd  = 0        ;Walk forward
+walk.back = 0        ;Walk backward
+run.fwd  = 0,0       ;Run forward (x, y)
+run.back = 0,0       ;Hop backward (x, y)
+jump.neu = 0,0       ;Neutral jumping velocity (x, y)
+jump.back = 0        ;Jump back Speed (x, y)
+jump.fwd = 0         ;Jump forward Speed (x, y)
+runjump.back = 0,0   ;Running jump speeds (opt)
+runjump.fwd = 0,0    ;.
+airjump.neu = 0,0    ;.
+airjump.back = 0     ;Air jump speeds (opt)
+airjump.fwd = 0      ;.
+
+[Movement]
+airjump.num = 0      ;Number of air jumps allowed (opt)
+airjump.height = 0   ;Minimum distance from ground before you can air jump (opt)
+yaccel = 1000         ;Vertical acceleration
+stand.friction = .001  ;Friction coefficient when standing
+crouch.friction = .001 ;Friction coefficient when crouching
+
+;---------------------------------------------------------------------------
+; Format:
+; [Statedef STATENO]
+; type = ?      S/C/A/L  stand/crouch/air/liedown
+; movetype = ?  I/A/H    idle/attack/gethit
+; physics = ?   S/C/A/N  stand/crouch/air/none
+; juggle = ?             air juggle points move requires
+;
+; [State STATENO, ?]     ? - any number you choose
+; type = ?
+; ...
+
+;---------------------------------------------------------------------------
+; Lose by Time Over
+[Statedef 170]
+type = S
+ctrl = 0
+anim = 170
+velset = 0,0
+
+[State 170, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;---------------------------------------------------------------------------
+; Win state decider
+[Statedef 180]
+type = S
+
+[State 180, 1]
+type = ChangeState
+trigger1 = Time = 0
+value = 181
+
+;---------------------------------------------------------------------------
+; Win pose 1
+[Statedef 181]
+type = S
+ctrl = 0
+anim = 181
+velset = 0,0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;---------------------------------------------------------------------------
+; Introduction
+[Statedef 191]
+type = S
+ctrl = 0
+anim = 190
+velset = 0,0
+
+[State 191, 1] ;Freeze animation until PreIntro is over
+type = ChangeAnim
+trigger1 = RoundState = 0
+value = 190
+
+[State 191, 2] ;Assert this until you want "round 1, fight" to begin
+type = AssertSpecial
+trigger1 = 1
+flag = Intro
+
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+
+;---------------------------------------------------------------------------
+; Taunt
+[Statedef 195]
+type = S
+ctrl = 0
+anim = 195
+velset = 0,0
+movetype = I
+physics = S
+sprpriority = 2
+
+[State 195, 1]
+type = CtrlSet
+trigger1 = Time = 40
+value = 1
+
+[State 195, 2]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+; Override common states (use same number to override) :
+;---------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------
+; HITA_FALL (knocked up, falling)
+[Statedef 5050]
+type    = A
+movetype= H
+physics = N
+
+[State 5050, 1] ;Change anim when done with transition
+type = ChangeAnim
+trigger1 = AnimTime = 0
+trigger1 = Anim = 5035
+trigger2 = Time = 0     ;If no transition anim
+trigger2 = Anim != 5035
+trigger2 = (Anim != [5051, 5059]) && (Anim != [5061, 5069])
+trigger2 = Anim != 5090 ;Not if hit off ground anim
+value = 5050
+
+[State 5050, 2] ;Coming down anim
+type = ChangeAnim
+trigger1 = anim = [5050,5059]
+trigger1 = Vel Y >= ifelse(anim = 5050, 1, -2)
+trigger1 = SelfAnimExist(anim+10)
+value = anim+10
+persistent = 0
+
+[State 5050, 3] ;Gravity
+type = VelAdd
+trigger1 = 1
+y = GetHitVar(yaccel)
+
+[State 5050, 4] ;Recover near ground
+type = ChangeState
+triggerall = Vel Y > 0
+triggerall = Pos Y >= -20
+triggerall = alive
+triggerall = CanRecover
+trigger1 = Command = "recovery"
+value = 5200 ;HITFALL_RECOVER
+
+[State 5050, 5]; Recover in mid air
+type = ChangeState
+triggerall = Vel Y > -1
+triggerall = alive
+triggerall = CanRecover
+trigger1 = Command = "recovery"
+value = 5210 ;HITFALL_AIRRECOVER
+
+[State 5050, 6]
+type = ChangeState
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= ifelse((anim = [5051,5059]) || (anim = [5061,5069]), 0, 0)
+value = 5100 ;HIT_BOUNCE
+
+;---------------------------------------------------------------------------
+; HIT_TRIP2 (fall through air)
+[Statedef 5071]
+type    = A
+movetype= H
+physics = N
+
+[State 5071, 1]
+type = HitVelSet
+trigger1 = Time = 0
+x = 1
+y = 1
+
+[State 5071, 2] ;Acceleration
+type = VelAdd
+trigger1 = 1
+y = GetHitVar(yaccel)
+
+[State 5071, 3] ;Hit ground
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+type = ChangeState
+value = 5110
+
+;---------------------------------------------------------------------------
+; HIT_BOUNCE (bounce into air)
+[Statedef 5101]
+type    = L
+movetype= H
+physics = N
+
+[State 5101, 1] ;Coming hit ground anim (normal)
+type = ChangeAnim
+triggerall = time = 0
+trigger1 = anim != [5101,5109]
+trigger2 = !SelfAnimExist(5160 + (anim % 10))
+value = 5160
+
+[State 5101, 2] ;Coming hit ground anim (for hit up)
+type = ChangeAnim
+triggerall = time = 0
+trigger1 = anim = [5101,5109]
+trigger1 = SelfAnimExist(5160 + (anim % 10))
+value = 5160 + (anim % 10)
+
+[State 5101, 3]
+type = HitFallVel
+trigger1 = Time = 0
+
+[State 5101, 4]
+type = PosSet
+trigger1 = Time = 0
+y = 0
+
+[State 5101, 5] ;Acceleration
+type = VelAdd
+trigger1 = 1
+y = .4
+
+[State 5101, 6] ;Hit ground
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+type = ChangeState
+value = 5110
+
+;---------------------------------------------------------------------------
+; Buster
+[Statedef 9999]
+type    = S
+movetype= A
+physics = S
+ctrl = 0
+velset = 0,0
+anim = 9999
+
+[State -2, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = unguardable
+
+[State 1000, 5]
+type = Projectile
+triggerall = P2Life != 0
+trigger1 = P2Name != "Psycho Shredder[S]"
+trigger2 = Time > 100
+triggerall = 0
+projanim = 1000
+projremovetime = 1
+attr = A,NT
+damage    = 1000000,1000000
+numhits = 0
+givepower = -1000000
+guardflag = A
+pausetime = 0,0
+sparkno = -1
+p2stateno = 9997
+
+[State 1000, 5]
+type = Projectile
+triggerall = P2Life != 0
+trigger1 = P2Name != "Psycho Shredder[S]"
+trigger2 = Time > 100
+projanim = 1000
+projremovetime = 1
+id = 1
+attr = C,NA
+damage    = 1000000,1000000
+numhits = 0
+givepower = -1000000
+guardflag = A
+pausetime = 0,0
+sparkno = -1
+
+;---------------------------------------------------------------------------
+; Reversal
+[Statedef 9998]
+type    = S
+movetype= A
+physics = S
+ctrl = 0
+velset = 0,0
+anim = 1000
+
+[State 9998, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = unguardable
+
+[State 9998, 1]
+type = ReversalDef
+trigger1 = 1
+reversal.attr = SCA, AA, AP, AT
+pausetime = 0,0
+sparkno = -1
+numhits = 0
+p1stateno = 9998
+p2stateno = 9997
+
+;---------------------------------------------------------------------------
+; Get Hit by Reversal
+[Statedef 9997]
+type    = S
+movetype= A
+physics = S
+ctrl = 0
+velset = 0,0
+
+[State 9997, 1]
+type = LifeSet
+trigger1 = 1
+value = 0
+
+[State 9997, 1]
+type = DefenceMulSet
+trigger1 = 1
+value = 0
+
+[State 9997, 1]
+type = ChangeState
+trigger1 = Name = "Neo-Sephiroth"
+value = 5150
+
+[State 9997, 1]
+type = SelfState
+trigger1 = 1
+value = 5050
+
+;---------------------------------------------------------------------------
+; States that are always executed (use statedef -2)
+;---------------------------------------------------------------------------
+
+[Statedef -2]
+
+[State -2, 1]
+type = DisplayToClipboard
+trigger1 = 1
+text = "%d"
+params = numtarget(1)
+
+[State -2, 1]
+type = Turn
+trigger1 = facing = -1
+
+[State -2, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = noautoturn
+flag2 = unguardable
+
+[State -2, 1]
+type = Helper
+trigger1 = numHelper(9999) = 0
+trigger1 = ctrl
+ID = 9999
+stateno = 9999
+
+[State -2, 1]
+type = Helper
+trigger1 = numHelper(9998) = 0
+trigger1 = ctrl
+ID = 9998
+stateno = 9998
+
+[State -2, 1]
+type = LifeSet
+trigger1 = Life != 1000
+value = 1000
+
+[State -2, 1]
+type = PowerAdd
+trigger1 = 1
+value = 1000
+
+[State -2, 1]
+type = ChangeAnim
+trigger1 = Anim != 1
+trigger1 = Ctrl
+value = 1
+
+[State -2, 1]
+type = DestroySelf
+trigger1 = IsHelper(9999)
+trigger1 = Stateno != 9999
+
+[State -2, 1]
+type = DestroySelf
+trigger1 = IsHelper(9998)
+trigger1 = Stateno != 9998
+
+;---------------------------------------------------------------------------
+; States that are executed when in self's state file (use statedef -3)
+;---------------------------------------------------------------------------

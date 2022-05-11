@@ -70,8 +70,6 @@
  ;
  ;Insert your characters below.
 
-kfm, stages/kfm.def
-kfm720, stages/kfm.def
 Amelia_Earhart, stages/kfm.def
 Abraham_Linc, stages/kfm.def
 
@@ -81,6 +79,7 @@ Abraham_Linc, stages/kfm.def
  ;For example, you can insert "stages/mybg.def".
 stages/colosseum.def
 stages/pyramids.def
+stages/house.def
 
 ;---------------------------------------------------------------------
 [Options]
