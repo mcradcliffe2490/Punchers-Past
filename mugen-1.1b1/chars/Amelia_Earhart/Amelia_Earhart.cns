@@ -93,13 +93,13 @@ down.friction.threshold = .05         ;If the player's speed drops below this th
 ;If this section is included, the default language victory quotes must be in English.
 [Quotes]
 ; Up to 100 victory quotes can be specified per language (victory0 - victory99)
-victory1 = "You must defeat Tu Shou to stand a chance."
-victory2 = "You need a lot of training. Come back in ten years."
-victory3 = "You look familiar. Did I see you on TV?"
-victory4 = "Your moves are too predictable. You want to learn Kung Fu Palm? It's not for novices."
+victory1 = "Do you even pilot bro?"
+victory2 = "Go home buddy, I fly alone"
+victory3 = "Fly much?"
+victory4 = "I call my plane the yeet machine"
 victory5 = "That was a good workout."
-victory6 = "I want to challenge more skilled fighters."
-victory7 = "What do you mean my girlfriend is in another temple?"
+victory6 = "That wasn't even worth the flight"
+victory7 = "What goes up, must come down"
 
 ;Alternate language victory quotes (optional).
 ;0 or more alternate language sections may be added, preceded by the
@@ -241,7 +241,7 @@ sprpriority = 2
 type = HitDef
 trigger1 = !time
 attr = S, SP                     ;Attribute: Standing, Normal Attack
-damage = 50, 0                   ;Damage that move inflicts, guard damage
+damage = 60, 0                   ;Damage that move inflicts, guard damage
 animtype = Light                 ;Animation type: Light, Medium, Heavy, Back (def: Light)
 guardflag = MA                   ;Flags on how move is to be guarded against
 hitflag = MAF                    ;Flags of conditions that move can hit
