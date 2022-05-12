@@ -407,18 +407,6 @@ trigger2 = (stateno = 400) || (stateno = 430)
 trigger2 = (time > 9) || (movecontact && time > 5)
 
 ;---------------------------------------------------------------------------
-;Crouching Strong Kick
-[State -1, Crouching Strong Kick]
-type = ChangeState
-value = 440
-triggerall = command = "b"
-triggerall = command = "holddown"
-trigger1 = statetype = C
-trigger1 = ctrl
-trigger2 = (stateno = 400) || (stateno = 430)
-trigger2 = (time > 9) || (movecontact && time > 5)
-
-;---------------------------------------------------------------------------
 ;Jump Light Punch
 [State -1, Jump Light Punch]
 type = ChangeState

@@ -341,10 +341,11 @@ value = 0, 4
 
 [State 210, 2]
 type = HitDef
-trigger1 = AnimElem = 3
+trigger1 = AnimElem = 4
+trigger2 = AnimElem = 5
 attr = S, NA
 animtype  = Medium
-damage    = 57
+damage    = 70
 guardflag = MA
 pausetime = 12,12
 sparkno = 1
@@ -354,9 +355,10 @@ guardsound = 6,0
 ground.type = High
 ground.slidetime = 12
 ground.hittime  = 16
-ground.velocity = -5.5
+ground.velocity = -2.5, 5
 air.velocity = -2.5,-4
 forcenofall = 1
+
 
 [State 210, 3]
 type = ChangeAnim
@@ -412,7 +414,7 @@ guardsound = 6,0
 ground.type = Low
 ground.slidetime = 10
 ground.hittime  = 14
-ground.velocity = -5
+ground.velocity = -3
 air.velocity = -2.5,-3.5
 
 [State 230, 3]
@@ -428,42 +430,63 @@ ctrl = 1
 type    = S
 movetype= A
 physics = S
-juggle  = 5
-poweradd= 30
+juggle  = 3
+poweradd= 5
 ctrl = 0
 velset = 0,0
 anim = 240
-sprpriority = 2
+sprpriority = -1
+
+[State 240, Width]
+type = Width
+trigger1 = (AnimElemTime (2) >= 0) && (AnimElemTime (7) < 0)
+value = 15,0
 
 [State 240, 1]
 type = PlaySnd
 trigger1 = Time = 2
-value = 0, 1
+value = 0, 4
 
 [State 240, 2]
 type = HitDef
-trigger1 = Time = 0
-attr = S, NA
-animtype  = Medium
-damage    = 63
+trigger1 = AnimElem = 3
+trigger2 = !movehit
+trigger2 = AnimElem = 4
+attr = S, SA
+animtype  = Hard
+damage    = 60, 5
+getpower  = 0
+priority  = 4
 guardflag = MA
-pausetime = 12,12
-sparkno = 1
-sparkxy = -10,-60
-hitsound   = 5,2
+pausetime = 8,7
+sparkxy = -40,-240
+hitsound   = 5,4
 guardsound = 6,0
 ground.type = Low
-ground.slidetime = 12
-ground.hittime  = 17
-ground.velocity = -6
-air.velocity = -2.2,-3.2
+ground.slidetime = 22
+ground.hittime  = 22
+ground.velocity = -32,-10
+guard.velocity = -10
+air.velocity = -32,-10
+airguard.velocity = -20, -10
+fall = 1
+p2facing = 1        ;Force to face p1
 
 [State 240, 3]
-type = PosAdd
-trigger1 = AnimElem = 7
-x = 12
+type = ChangeAnim
+trigger1 = AnimElemTime(5) > 0 && AnimElemTime(6) <= 0
+trigger1 = movecontact
+ignorehitpause = 1
+persistent = 0
+value = 210
+elem = 6
 
 [State 240, 4]
+type = SprPriority
+trigger1 = AnimElem = 5
+value = 2
+
+[State 240, 5]
 type = ChangeState
 trigger1 = AnimTime = 0
 value = 0
